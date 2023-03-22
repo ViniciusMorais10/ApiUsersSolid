@@ -1,0 +1,202 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API responsible for user management.",
+    "description": "API responsible for user management, Actions such as create, edit, list, and make a user admin are exemplified in the methods below",
+    "version": "1.0",
+    "contact": {
+      "name": "Vinicius de Morais",
+      "email": "vinicius@vtechdev.com.br"
+    }
+  },
+  "servers": [
+    {
+      "url": "localhost:3333/api-docs",
+      "description": "Developer"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create a new user",
+        "description": "Management users",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "developer",
+                  "email": "developer@test.com.br"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "example": {
+                  "admin": false,
+                  "id": "c45da304-8bc0-47e1-9e2d-8d97854fa3d7",
+                  "name": "vinicius",
+                  "email": "dev@howisyou.com.br",
+                  "created_at": "2023-03-21",
+                  "updated_at": "2023-03-21"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email already exists!",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "Mail informed already exists!"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Return all users",
+        "description": "Only __`admin`__ user cant access",
+        "parameters": [
+          {
+            "name": "user_id",
+            "required": true,
+            "in": "header"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user_id": {
+                    "type": "string",
+                    "required": [
+                      "user_id"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "sucessful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "admin": {
+                        "type": "boolean"
+                      },
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": {                    
+                      "admin": false,
+                      "id": "c45da304-8bc0-47e1-9e2d-8d97854fa3d7",
+                      "name": "vinicius",
+                      "email": "dev@howisyou.com.br",
+                      "created_at": "2023-03-21",
+                      "updated_at": "2023-03-21"
+                    }                  
+                }
+            }
+          }
+        },
+        "400":{
+          "description":"User not exists or User not admin!"
+        }
+      }
+    }
+    },
+    "/users/{users_id}":{
+      "get":{        
+        "tags": [
+          "Users"
+        ],
+        "summary": "Return a specific user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200":{
+            "description": "Operation sucessful"
+          },
+          "404":{
+            "description": "User not found!"
+          }
+        }
+      }
+    },
+    "/users/{users_id}/admin":{
+      "patch":{        
+        "tags": [
+          "Users"
+        ],
+        "summary": "Make admin user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "user_id",
+            "required": true,
+            "in": "path"
+          }
+        ],
+        "responses": {
+          "200":{
+            "description": "Operation sucessful"
+          },
+          "404":{
+            "description": "User not found!"
+          }
+        }
+      }
+    }
+  }
+}
